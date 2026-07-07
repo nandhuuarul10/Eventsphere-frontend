@@ -55,7 +55,7 @@
             const role = document.getElementById("role").value;
 
             try {
-                await apiRequest("/auth/register", "POST", { userName, email, passWord, role });
+                await apiRequest("/api/auth/register", "POST", { userName, email, passWord, role });           
                 showToast("Registration Successful! Please Login.");
                 setTimeout(() => {
                     window.location.href = "login.html";
