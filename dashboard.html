@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventSphere - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo-section">EventSphere</div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a class="nav-link active" onclick="switchTab('dashboard')">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="switchTab('sessions')">Sessions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="switchTab('speakers')">Speakers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="switchTab('attendees')">Attendees</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="switchTab('profile')">My Profile</a>
+                </li>
+            </ul>
+            <button class="btn logout-btn" onclick="logout()">Sign Out</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header-section">
+                <div class="header-brand-group">
+                    <span class="header-logo">EventSphere</span>
+                    <span class="header-divider"></span>
+                    <h1 id="tabTitle" class="header-tab-title">Sessions</h1>
+                </div>
+                <div class="user-info">Logged in as: <span id="currentUser">Loading...</span> (<span id="userRole">...</span>)</div>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div id="dashboardSection" class="tab-section">
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card glass">
+                        <h3>Total Sessions</h3>
+                        <div class="stat-number" id="totalSessions">0</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <h3>Total Speakers</h3>
+                        <div class="stat-number" id="totalSpeakers">0</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <h3>Total Attendees</h3>
+                        <div class="stat-number" id="totalAttendees">0</div>
+                    </div>
+                </div>
+
+                <!-- Explore Section -->
+                <div class="explore-section glass" style="padding: 24px; margin-top: 20px;">
+                    <h2 style="margin-bottom: 16px; font-size: 1.4rem;">Explore EventSphere</h2>
+                    <div class="search-container">
+                        <span class="search-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </span>
+                        <input type="text" class="search-input" id="dashboardSearch" placeholder="Explore sessions, speakers, or attendees..." oninput="handleDashboardSearch()">
+                    </div>
+                    
+                    <div id="dashboardSearchResults" class="dashboard-results-grid">
+                        <!-- Column 1: Sessions -->
+                        <div class="results-column">
+                            <h3 class="column-title">Sessions (<span id="matchSessionsCount">0</span>)</h3>
+                            <div id="dashboardSessionsList" class="results-list"></div>
+                        </div>
+                        
+                        <!-- Column 2: Speakers -->
+                        <div class="results-column">
+                            <h3 class="column-title">Speakers (<span id="matchSpeakersCount">0</span>)</h3>
+                            <div id="dashboardSpeakersList" class="results-list"></div>
+                        </div>
+                        
+                        <!-- Column 3: Attendees -->
+                        <div class="results-column">
+                            <h3 class="column-title">Attendees (<span id="matchAttendeesCount">0</span>)</h3>
+                            <div id="dashboardAttendeesList" class="results-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sessions Tab -->
+            <div id="sessionsSection" class="tab-section hidden">
+                <div style="margin-bottom: 20px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+                    <button class="btn" style="width: auto; padding: 10px 20px;" onclick="openSessionModal()">+ Add New Session</button>
+                    <div class="search-container" style="margin-bottom: 0; flex-grow: 1; max-width: 400px;">
+                        <span class="search-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </span>
+                        <input type="text" class="search-input" id="sessionsSearch" placeholder="Search sessions..." oninput="filterSessions()">
+                    </div>
+                </div>
+                <div class="card-grid" id="sessionsGrid"></div>
+            </div>
+
+            <!-- Speakers Tab -->
+            <div id="speakersSection" class="tab-section hidden">
+                <div style="margin-bottom: 20px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+                    <button class="btn" style="width: auto; padding: 10px 20px;" onclick="openSpeakerModal()">+ Add New Speaker</button>
+                    <div class="search-container" style="margin-bottom: 0; flex-grow: 1; max-width: 400px;">
+                        <span class="search-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </span>
+                        <input type="text" class="search-input" id="speakersSearch" placeholder="Search speakers..." oninput="filterSpeakers()">
+                    </div>
+                </div>
+                <div class="card-grid" id="speakersGrid"></div>
+            </div>
+
+            <!-- Attendees Tab -->
+            <div id="attendeesSection" class="tab-section hidden">
+                <div style="margin-bottom: 20px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+                    <button class="btn" style="width: auto; padding: 10px 20px;" onclick="openAttendeeModal()">+ Add New Attendee</button>
+                    <div class="search-container" style="margin-bottom: 0; flex-grow: 1; max-width: 400px;">
+                        <span class="search-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </span>
+                        <input type="text" class="search-input" id="attendeesSearch" placeholder="Search attendees..." oninput="filterAttendees()">
+                    </div>
+                </div>
+                <div class="card-grid" id="attendeesGrid"></div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div id="profileSection" class="tab-section hidden" style="max-width: 500px;">
+                <form id="profileForm" class="glass" style="padding: 24px; border-radius: 12px;">
+                    <div class="form-group">
+                        <label for="profileUsername">Username</label>
+                        <input type="text" id="profileUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileEmail">Email</label>
+                        <input type="email" id="profileEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profilePassword">New Password (leave blank to keep current)</label>
+                        <input type="password" id="profilePassword" placeholder="Enter new password">
+                    </div>
+                    <button type="submit" class="btn">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals Section -->
+    <!-- Session Modal -->
+    <div id="sessionModal" class="modal">
+        <div class="modal-content glass">
+            <button class="modal-close" onclick="closeModal('sessionModal')">&times;</button>
+            <h2 id="sessionModalTitle" style="margin-bottom: 20px;">Add Session</h2>
+            <form id="sessionForm">
+                <input type="hidden" id="sessionId">
+                <div class="form-group">
+                    <label for="sessionName">Session Name</label>
+                    <input type="text" id="sessionName" required placeholder="Session Name">
+                </div>
+                <div class="form-group">
+                    <label for="sessionTopic">Topic</label>
+                    <input type="text" id="sessionTopic" placeholder="e.g. AI Engineering">
+                </div>
+                <div class="form-group">
+                    <label for="sessionDay">Day of Week</label>
+                    <input type="text" id="sessionDay" placeholder="e.g. Monday">
+                </div>
+                <div class="form-group">
+                    <label for="sessionStart">Start Time (HH:MM)</label>
+                    <input type="time" id="sessionStart" required>
+                </div>
+                <div class="form-group">
+                    <label for="sessionEnd">End Time (HH:MM)</label>
+                    <input type="time" id="sessionEnd" required>
+                </div>
+                <div class="form-group">
+                    <label for="sessionRoom">Room / Note</label>
+                    <input type="text" id="sessionRoom" placeholder="e.g. Auditorium A">
+                </div>
+                <div class="form-group">
+                    <label for="sessionSpeaker">Speaker</label>
+                    <select id="sessionSpeaker">
+                        <option value="">Select Speaker (None)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Save Session</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Speaker Modal -->
+    <div id="speakerModal" class="modal">
+        <div class="modal-content glass">
+            <button class="modal-close" onclick="closeModal('speakerModal')">&times;</button>
+            <h2 id="speakerModalTitle" style="margin-bottom: 20px;">Add Speaker</h2>
+            <form id="speakerForm">
+                <input type="hidden" id="speakerId">
+                <div class="form-group">
+                    <label for="speakerName">Full Name</label>
+                    <input type="text" id="speakerName" required placeholder="Speaker Name">
+                </div>
+                <div class="form-group">
+                    <label for="speakerEmail">Email</label>
+                    <input type="email" id="speakerEmail" required placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <label for="speakerExpertise">Expertise</label>
+                    <input type="text" id="speakerExpertise" placeholder="e.g. Java, Spring Boot">
+                </div>
+                <div class="form-group">
+                    <label for="speakerBio">Short Bio</label>
+                    <textarea id="speakerBio" rows="3" placeholder="Bio..."></textarea>
+                </div>
+                <button type="submit" class="btn">Save Speaker</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Attendee Modal -->
+    <div id="attendeeModal" class="modal">
+        <div class="modal-content glass">
+            <button class="modal-close" onclick="closeModal('attendeeModal')">&times;</button>
+            <h2 id="attendeeModalTitle" style="margin-bottom: 20px;">Add Attendee</h2>
+            <form id="attendeeForm">
+                <input type="hidden" id="attendeeId">
+                <div class="form-group">
+                    <label for="attendeeName">Full Name</label>
+                    <input type="text" id="attendeeName" required placeholder="Attendee Name">
+                </div>
+                <div class="form-group">
+                    <label for="attendeeEmail">Email</label>
+                    <input type="email" id="attendeeEmail" required placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <label for="attendeeType">Registration Type</label>
+                    <select id="attendeeType" required>
+                        <option value="GENERAL">General Access</option>
+                        <option value="VIP">VIP</option>
+                        <option value="STUDENT">Student</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="attendeeSession">Session</label>
+                    <select id="attendeeSession">
+                        <option value="">No Session</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Save Attendee</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
