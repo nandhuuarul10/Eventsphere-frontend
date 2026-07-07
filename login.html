@@ -13,24 +13,30 @@
                 <h1>EventSphere</h1>
                 <p>Welcome back! Please login to your account</p>
             </div>
+
             <form id="loginForm">
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <input type="email" id="email" required placeholder="Enter your email">
                 </div>
+
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" required placeholder="Enter your password">
                 </div>
+
                 <button type="submit" class="btn">Sign In</button>
             </form>
+
             <div class="auth-footer">
-                Don't have an account? <a href="index.html">Register here</a>
+                Don't have an account?
+                <a href="index.html">Register here</a>
             </div>
         </div>
     </div>
 
     <script src="api.js"></script>
+
     <script>
         if (localStorage.getItem("token")) {
             window.location.href = "dashboard.html";
@@ -38,20 +44,29 @@
 
         document.getElementById("loginForm").addEventListener("submit", async (e) => {
             e.preventDefault();
+
             const email = document.getElementById("email").value;
             const passWord = document.getElementById("password").value;
 
             try {
-                const token = await apiRequest("/auth/login", "POST", { email, passWord });
+                const token = await apiRequest("/api/auth/login", "POST", {
+                    email,
+                    passWord
+                });
+
                 localStorage.setItem("token", token);
+
                 showToast("Login Successful! Redirecting...");
+
                 setTimeout(() => {
                     window.location.href = "dashboard.html";
                 }, 1000);
+
             } catch (err) {
                 showToast(err.message, "error");
             }
         });
     </script>
+
 </body>
 </html>
