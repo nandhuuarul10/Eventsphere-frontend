@@ -619,3 +619,29 @@ body {
 .hidden {
     display: none !important;
 }
+@media (max-width: 768px) {
+    .dashboard {
+        flex-direction: column;
+        height: auto; 
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 16px;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .main-content {
+        padding: 16px;
+    }
+
+    .header-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+    }
+}
