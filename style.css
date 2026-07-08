@@ -2,24 +2,24 @@
 
 :root {
     --bg-primary: #0d0614;
-    /* Deep rich dark violet */
+
     --bg-secondary: #180c25;
-    /* Slightly lighter deep violet */
+   
     --text-primary: #fdfafb;
-    /* Soft pink-white */
+ 
     --text-secondary: #bbaec6;
-    /* Soft purple-gray */
+   
     --accent: #d946ef;
-    /* Vibrant fuchsia/pink */
+   
     --accent-hover: #c026d3;
-    /* Fuchsia 600 */
+ 
     --success: #10b981;
     --danger: #f43f5e;
-    /* Rose red */
+
     --border: #311c47;
-    /* Dark violet border */
+
     --card-bg: rgba(24, 12, 37, 0.7);
-    /* Translucent card bg with purple tint */
+   
 }
 
 * {
@@ -37,7 +37,7 @@ body {
     flex-direction: column;
 }
 
-/* Glassmorphism utility */
+
 .glass {
     background: var(--card-bg);
     backdrop-filter: blur(12px);
@@ -46,7 +46,7 @@ body {
     border-radius: 16px;
 }
 
-/* Main Container for Auth */
+
 .auth-container {
     display: flex;
     justify-content: center;
@@ -82,7 +82,6 @@ body {
     font-size: 0.95rem;
 }
 
-/* Forms styling */
 .form-group {
     margin-bottom: 20px;
 }
@@ -116,7 +115,7 @@ body {
     box-shadow: 0 0 0 2px rgba(217, 70, 239, 0.2);
 }
 
-/* Override browser autofill background/text color to match standard input fields */
+
 .form-group input:-webkit-autofill,
 .form-group input:-webkit-autofill:hover, 
 .form-group input:-webkit-autofill:focus, 
@@ -165,7 +164,7 @@ body {
     text-decoration: underline;
 }
 
-/* Dashboard styling */
+
 .dashboard {
     display: flex;
     height: 100vh;
@@ -622,16 +621,45 @@ body {
 @media (max-width: 768px) {
     .dashboard {
         flex-direction: column;
-        height: auto; 
-        min-height: 100vh;
+        height: 100vh;
     }
 
     .sidebar {
         width: 100%;
         height: auto;
-        padding: 16px;
+        padding: 12px;
         border-right: none;
         border-bottom: 1px solid var(--border);
+       
+        flex-direction: row;
+        align-items: center;
+        overflow-x: auto;
+    }
+
+
+    .logo-section {
+        display: none; 
+    }
+
+    .nav-menu {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .nav-item {
+        margin-bottom: 0;
+    }
+
+    .nav-link {
+        padding: 8px 16px;
+        white-space: nowrap; 
+    }
+
+    .logout-btn {
+        margin-top: 0;
+        margin-left: 15px;
+        white-space: nowrap;
     }
 
     .main-content {
