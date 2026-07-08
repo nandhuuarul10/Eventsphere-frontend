@@ -721,5 +721,71 @@ async function loadDashboardData() {
 
     }
 }
+function renderDashboardExplore() {
+    handleDashboardSearch();
+}
+
+function handleDashboardSearch() {
+
+    const search = document.getElementById("dashboardSearch").value.toLowerCase().trim();
+
+    const sessionContainer = document.getElementById("dashboardSessionsList");
+    const speakerContainer = document.getElementById("dashboardSpeakersList");
+    const attendeeContainer = document.getElementById("dashboardAttendeesList");
+
+    sessionContainer.innerHTML = "";
+    speakerContainer.innerHTML = "";
+    attendeeContainer.innerHTML = "";
+
+    const filteredSessions = sessionsList.filter(s =>
+        !search ||
+        (s.sessionName && s.sessionName.toLowerCase().includes(search)) ||
+        (s.topic && s.topic.toLowerCase().includes(search))
+    );
+
+    const filteredSpeakers = speakersList.filter(s =>
+        !search ||
+        (s.name && s.name.toLowerCase().includes(search)) ||
+        (s.email && s.email.toLowerCase().includes(search))
+    );
+
+    const filteredAttendees = attendeesList.filter(a =>
+        !search ||
+        (a.fullName && a.fullName.toLowerCase().includes(search)) ||
+        (a.email && a.email.toLowerCase().includes(search))
+    );
+
+    document.getElementById("matchSessionsCount").innerText = filteredSessions.length;
+    document.getElementById("matchSpeakersCount").innerText = filteredSpeakers.length;
+    document.getElementById("matchAttendeesCount").innerText = filteredAttendees.length;
+
+    filteredSessions.forEach(s => {
+        sessionContainer.innerHTML += `
+            <div class="search-item">
+                <strong>${s.sessionName}</strong><br>
+                ${s.topic || ""}
+            </div>
+        `;
+    });
+
+    filteredSpeakers.forEach(s => {
+        speakerContainer.innerHTML += `
+            <div class="search-item">
+                <strong>${s.name}</strong><br>
+                ${s.email}
+            </div>
+        `;
+    });
+
+    filteredAttendees.forEach(a => {
+        attendeeContainer.innerHTML += `
+            <div class="search-item">
+                <strong>${a.fullName}</strong><br>
+                ${a.email}
+            </div>
+        `;
+    });
+}
+
 // Initial Loading
 switchTab("dashboard");
